@@ -14,7 +14,7 @@ const (
 	// DefaultGasAdjustment is applied to gas estimates to avoid tx execution
 	// failures due to state changes that might occur between the tx simulation
 	// and the actual run.
-	DefaultGasAdjustment = 1.0
+	DefaultGasAdjustment = 1.3
 	DefaultGasLimit      = 200000
 	GasFlagAuto          = "auto"
 
@@ -97,16 +97,16 @@ func AddQueryFlagsToCmd(cmd *cobra.Command) {
 func AddTxFlagsToCmd(cmd *cobra.Command) {
 	cmd.Flags().StringP(tmcli.OutputFlag, "o", "json", "Output format (text|json)")
 	cmd.Flags().String(FlagKeyringDir, "", "The client Keyring directory; if omitted, the default 'home' directory will be used")
-	cmd.Flags().String(FlagFrom, "", "Name or address of private key with which to sign")
+	cmd.Flags().String(FlagFrom, "", "mikereg", "Name or address of private key with which to sign")
 	cmd.Flags().Uint64P(FlagAccountNumber, "a", 0, "The account number of the signing account (offline mode only)")
 	cmd.Flags().Uint64P(FlagSequence, "s", 0, "The sequence number of the signing account (offline mode only)")
 	cmd.Flags().String(FlagNote, "", "Note to add a description to the transaction (previously --memo)")
 	cmd.Flags().String(FlagFees, "", "Fees to pay along with transaction; eg: 10uatom")
-	cmd.Flags().String(FlagGasPrices, "", "Gas prices in decimal format to determine the transaction fee (e.g. 0.1uatom)")
+	cmd.Flags().String(FlagGasPrices, "", "0.025ujuno", "Gas prices in decimal format to determine the transaction fee (e.g. 0.1uatom)")
 	cmd.Flags().String(FlagNode, "tcp://localhost:26657", "<host>:<port> to tendermint rpc interface for this chain")
 	cmd.Flags().Bool(FlagUseLedger, false, "Use a connected Ledger device")
 	cmd.Flags().Float64(FlagGasAdjustment, DefaultGasAdjustment, "adjustment factor to be multiplied against the estimate returned by the tx simulation; if the gas limit is set manually this flag is ignored ")
-	cmd.Flags().StringP(FlagBroadcastMode, "b", BroadcastSync, "Transaction broadcasting mode (sync|async|block)")
+	cmd.Flags().StringP(FlagBroadcastMode, "b", BroadcastBlock, "Transaction broadcasting mode (sync|async|block)")
 	cmd.Flags().Bool(FlagDryRun, false, "ignore the --gas flag and perform a simulation of a transaction, but don't broadcast it (when enabled, the local Keybase is not accessible)")
 	cmd.Flags().Bool(FlagGenerateOnly, false, "Build an unsigned transaction and write it to STDOUT (when enabled, the local Keybase is not accessible)")
 	cmd.Flags().Bool(FlagOffline, false, "Offline mode (does not allow any online functionality")
@@ -117,7 +117,7 @@ func AddTxFlagsToCmd(cmd *cobra.Command) {
 	cmd.Flags().String(FlagFeeAccount, "", "Fee account pays fees for the transaction instead of deducting from the signer")
 
 	// --gas can accept integers and "auto"
-	cmd.Flags().String(FlagGas, "", fmt.Sprintf("gas limit to set per-transaction; set to %q to calculate sufficient gas automatically (default %d)", GasFlagAuto, DefaultGasLimit))
+	cmd.Flags().String(FlagGas, "", "auto", fmt.Sprintf("gas limit to set per-transaction; set to %q to calculate sufficient gas automatically (default %d)", GasFlagAuto, DefaultGasLimit))
 
 	cmd.MarkFlagRequired(FlagChainID)
 }
